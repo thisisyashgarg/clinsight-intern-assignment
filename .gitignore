@@ -6,3 +6,6 @@ out
 .env*
 coverage
 next-env.d.ts
+
+# Internal evaluator notes — never commit/push
+BUGS.md
