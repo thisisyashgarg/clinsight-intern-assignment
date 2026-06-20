@@ -1,29 +1,19 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import type { Expert } from '@/lib/types'
 import { ExpertCard } from '@/components/ExpertCard'
 import { SPECIALTIES } from '@/lib/seed'
-
-type ApiResponse = {
-  experts: Expert[]
-  total: number
-  page: number
-  pageSize: number
-}
+import { listExperts, type ListResult } from '@/lib/db'
 
 export default function DirectoryPage() {
   const [q, setQ] = useState('')
   const [specialty, setSpecialty] = useState('')
   const [sort, setSort] = useState('name')
   const [page, setPage] = useState(1)
-  const [data, setData] = useState<ApiResponse | null>(null)
+  const [data, setData] = useState<ListResult | null>(null)
 
   useEffect(() => {
-    const params = new URLSearchParams({ q, specialty, sort, page: String(page) })
-    fetch(`/api/experts?${params.toString()}`)
-      .then((res) => res.json())
-      .then(setData)
+    setData(listExperts({ q, specialty, sort, page }))
   }, [q, specialty, sort, page])
 
   const totalPages = data ? Math.ceil(data.total / data.pageSize) : 1

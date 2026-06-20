@@ -4,6 +4,7 @@ import { use, useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { Expert } from '@/lib/types'
 import { formatRating } from '@/lib/rating'
+import { getExpert } from '@/lib/db'
 import { useShortlist } from '@/lib/store'
 
 // Maps years of experience to a seniority label.
@@ -28,13 +29,12 @@ export default function ExpertDetailPage({
   const shortlisted = expert ? ids.includes(expert.id) : false
 
   useEffect(() => {
-    fetch(`/api/experts/${id}`).then(async (res) => {
-      if (!res.ok) {
-        setNotFound(true)
-        return
-      }
-      setExpert(await res.json())
-    })
+    const found = getExpert(Number(id))
+    if (!found) {
+      setNotFound(true)
+      return
+    }
+    setExpert(found)
   }, [id])
 
   if (notFound) {

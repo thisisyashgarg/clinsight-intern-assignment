@@ -1,8 +1,8 @@
 import type { Expert } from './types'
 
-// In-memory data store. Resets every time the dev server restarts.
-// This is intentional for the assignment — no database setup required.
-export const experts: Expert[] = [
+// Initial seed data. On first load this is written into localStorage (see
+// lib/db.ts), which then acts as the "database" for the rest of the app.
+export const seedExperts: Expert[] = [
   { id: 1, name: 'Dr. Aisha Rahman', email: 'aisha.rahman@example.com', specialty: 'Cardiology', yearsExperience: 12, reviews: [5, 4, 5, 4] },
   { id: 2, name: 'Dr. Ben Carter', email: 'ben.carter@example.com', specialty: 'Pediatric Cardiology', yearsExperience: 8, reviews: [4, 4, 3] },
   { id: 3, name: 'Dr. Chen Wei', email: 'chen.wei@example.com', specialty: 'Neurology', yearsExperience: 15, reviews: [5, 5, 5, 5, 4] },
@@ -14,18 +14,6 @@ export const experts: Expert[] = [
   { id: 9, name: 'Dr. Ingrid Holm', email: 'ingrid.holm@example.com', specialty: 'Dermatology', yearsExperience: 3, reviews: [] },
   { id: 10, name: 'Dr. Jamal Reed', email: 'jamal.reed@example.com', specialty: 'Pediatric Cardiology', yearsExperience: 7, reviews: [4, 5, 5] },
 ]
-
-let nextId = experts.length + 1
-
-export function addExpert(data: Omit<Expert, 'id' | 'reviews'>): Expert {
-  const expert: Expert = { id: nextId++, reviews: [], ...data }
-  experts.push(expert)
-  return expert
-}
-
-export function getExpert(id: number): Expert | undefined {
-  return experts.find((e) => e.id === id)
-}
 
 export const SPECIALTIES = [
   'Cardiology',

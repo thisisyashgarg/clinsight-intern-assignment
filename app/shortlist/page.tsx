@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { Expert } from '@/lib/types'
 import { ExpertCard } from '@/components/ExpertCard'
+import { getExpert } from '@/lib/db'
 import { useShortlist } from '@/lib/store'
 
 export default function ShortlistPage() {
@@ -11,9 +12,9 @@ export default function ShortlistPage() {
   const [shortlisted, setShortlisted] = useState<Expert[]>([])
 
   useEffect(() => {
-    Promise.all(
-      ids.map((id) => fetch(`/api/experts/${id}`).then((res) => res.json())),
-    ).then(setShortlisted)
+    setShortlisted(
+      ids.map((id) => getExpert(id)).filter((e): e is Expert => e !== null),
+    )
   }, [ids])
 
   return (

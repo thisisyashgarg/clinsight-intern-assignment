@@ -24,8 +24,11 @@ an expert, add a new expert, and shortlist experts.
 - **Zod** for validation
 - **Zustand** for client state
 - **Vitest** for tests
-- Data lives in an in-memory array (`lib/seed.ts`) — no database to set up. It
-  resets every time you restart the dev server.
+- Data is stored in the browser's **localStorage** (`lib/db.ts`), seeded from
+  `lib/seed.ts` on first load. It acts as the "database" — your changes (e.g.
+  adding an expert) persist across page refreshes. No real database to set up.
+  To start fresh, clear the site's localStorage (DevTools → Application →
+  Local Storage) or run `localStorage.clear()` in the browser console.
 
 This is a simplified version of our real stack, so it should feel familiar to
 the work you'd be doing.

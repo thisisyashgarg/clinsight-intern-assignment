@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { createExpertSchema } from '@/lib/schemas'
 import { SPECIALTIES } from '@/lib/seed'
+import { addExpert } from '@/lib/db'
 
 type FieldErrors = Record<string, string[] | undefined>
 
@@ -38,16 +39,8 @@ export default function NewExpertPage() {
     }
 
     setSubmitting(true)
-    const res = await fetch('/api/experts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(result.data),
-    })
-    setSubmitting(false)
-
-    if (res.ok) {
-      router.push('/')
-    }
+    addExpert(result.data)
+    router.push('/')
   }
 
   return (
