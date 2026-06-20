@@ -23,7 +23,6 @@ an expert, add a new expert, and shortlist experts.
 - **Tailwind CSS** for styling
 - **Zod** for validation
 - **Zustand** for client state
-- **Vitest** for tests
 - Data is stored in the browser's **localStorage** (`lib/db.ts`), seeded from
   `lib/seed.ts` on first load. It acts as the "database" — your changes (e.g.
   adding an expert) persist across page refreshes. No real database to set up.
@@ -40,11 +39,9 @@ npm install
 npm run dev
 ```
 
-Open the URL it prints (usually http://localhost:3000). Run the tests with:
-
-```bash
-npm test
-```
+Then open **http://localhost:4000**. The app runs on a fixed port on purpose:
+`localStorage` is tied to the exact origin (host + port), so keeping the port
+stable is what lets your data survive restarts.
 
 ## Your task (target: ~6–8 hours, due in 1 day)
 
@@ -73,8 +70,6 @@ npm test
 - **Fix quality:** minimal, correct changes that don't break other things.
 - **Reporting:** clear, reproducible notes in `FLOW_NOTES.md`.
 - **PR hygiene:** focused commits and a readable PR description.
-
-Bonus (not required): add a Vitest test that would have caught a bug you fixed.
 
 Good luck — and if something is genuinely unclear, write down your assumption
 and keep going, just like you would on the job.
