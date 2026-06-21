@@ -4,7 +4,7 @@ import { z } from 'zod'
 // add-expert form and the POST /api/experts route handler).
 export const createExpertSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  email: z.string().min(1, 'Email is required'),
+  email: z.string().min(1, 'Email is required').email('Invalid email address'),
   specialty: z.string().min(1, 'Specialty is required'),
   yearsExperience: z.coerce.number(),
 })
