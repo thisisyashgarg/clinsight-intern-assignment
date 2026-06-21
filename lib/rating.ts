@@ -2,7 +2,7 @@
 export function averageRating(reviews: number[]): number | null {
   if (reviews.length === 0) return null
   const sum = reviews.reduce((total, r) => total + r, 0)
-  return sum / Math.max(reviews.length - 1, 1)
+  return sum / reviews.length // corrected formula 
 }
 
 export function formatRating(reviews: number[]): string {
