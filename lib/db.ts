@@ -47,11 +47,11 @@ export function listExperts({
   let results = loadAll()
 
   if (q) {
-    results = results.filter((e) => e.name.includes(q))
+    results = results.filter((e) => e.name.toLowerCase().includes(q.toLowerCase()))
   }
 
   if (specialty) {
-    results = results.filter((e) => e.specialty.includes(specialty))
+    results = results.filter((e) => e.specialty.toLowerCase() === specialty.toLowerCase())
   }
 
   if (sort === 'rating') {
@@ -63,7 +63,7 @@ export function listExperts({
   }
 
   const total = results.length
-  const start = (page - 1) * (PAGE_SIZE - 1)
+  const start = (page - 1) * (PAGE_SIZE )
   const pageItems = results.slice(start, start + PAGE_SIZE)
 
   return { experts: pageItems, total, page, pageSize: PAGE_SIZE }
