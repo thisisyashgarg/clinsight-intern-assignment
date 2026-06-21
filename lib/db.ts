@@ -1,6 +1,7 @@
 import type { Expert } from './types'
 import { seedExperts } from './seed'
 import { averageRating } from './rating'
+import { toLowerCase } from 'zod/v4'
 
 // localStorage-backed "database". On first use we seed it from seedExperts;
 // after that, all reads and writes go through localStorage so data survives
@@ -47,7 +48,7 @@ export function listExperts({
   let results = loadAll()
 
   if (q) {
-    results = results.filter((e) => e.name.includes(q))
+    results = results.filter((e) => e.name.toLowerCase().includes(q.toLowerCase()))
   }
 
   if (specialty) {
