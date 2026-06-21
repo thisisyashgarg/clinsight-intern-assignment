@@ -1,12 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
 import { useShortlist } from '@/lib/store'
 
 export function Header() {
   // Show how many experts are currently shortlisted.
-  const [count] = useState(() => useShortlist.getState().ids.length)
+  const count = useShortlist((state) => state.ids.length)
 
   return (
     <header className="border-b border-gray-200 bg-white">
