@@ -20,14 +20,9 @@ export default function NewExpertPage() {
   const [submitting, setSubmitting] = useState(false)
 
   function update(field: keyof typeof values, value: string) {
-    const next = { ...values, [field]: value }
-    setValues(next)
-
-    // Re-validate live so the user gets immediate feedback.
-    const result = createExpertSchema.safeParse(next)
-    if (!result.success) {
-      setErrors((prev) => ({ ...prev, ...result.error.flatten().fieldErrors }))
-    }
+    setValues((prev) => ({
+    ...prev,
+    [field]: value,}))
   }
 
   async function handleSubmit(e: React.FormEvent) {
