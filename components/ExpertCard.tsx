@@ -12,10 +12,10 @@ export function ExpertCard({ expert }: { expert: Expert }) {
 
   return (
     <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-4">
-      <div>
+      <div className="min-w-0 flex-1">
         <Link
           href={`/experts/${expert.id}`}
-          className="font-medium text-gray-900 hover:text-blue-600"
+          className="font-medium block truncate text-gray-900 hover:text-blue-600"
         >
           {expert.name}
         </Link>
