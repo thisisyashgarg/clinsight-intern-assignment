@@ -1,46 +1,60 @@
-'use client'
+"use client";
 
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { createExpertSchema } from '@/lib/schemas'
-import { SPECIALTIES } from '@/lib/seed'
-import { addExpert } from '@/lib/db'
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { createExpertSchema } from "@/lib/schemas";
+import { SPECIALTIES } from "@/lib/seed";
+import { addExpert } from "@/lib/db";
 
-type FieldErrors = Record<string, string[] | undefined>
+type FieldErrors = Record<string, string[] | undefined>;
 
 export default function NewExpertPage() {
-  const router = useRouter()
+  const router = useRouter();
   const [values, setValues] = useState({
-    name: '',
-    email: '',
-    specialty: '',
-    yearsExperience: '',
-  })
-  const [errors, setErrors] = useState<FieldErrors>({})
-  const [submitting, setSubmitting] = useState(false)
+    name: "",
+    email: "",
+    specialty: "",
+    yearsExperience: "",
+  });
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [submitting, setSubmitting] = useState(false);
 
   function update(field: keyof typeof values, value: string) {
-    const next = { ...values, [field]: value }
-    setValues(next)
+    const next = { ...values, [field]: value };
+    setValues(next);
 
     // Re-validate live so the user gets immediate feedback.
-    const result = createExpertSchema.safeParse(next)
+    const result = createExpertSchema.safeParse(next);
     if (!result.success) {
-      setErrors((prev) => ({ ...prev, ...result.error.flatten().fieldErrors }))
+      setErrors((prev) => ({ ...prev, ...result.error.flatten().fieldErrors }));
+    }
+    else {
+      setErrors({}) // clearing the error when valid input
     }
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    const result = createExpertSchema.safeParse(values)
+    e.preventDefault();
+    const result = createExpertSchema.safeParse(values);
     if (!result.success) {
-      setErrors(result.error.flatten().fieldErrors)
-      return
+      setErrors(result.error.flatten().fieldErrors);
+      return;
     }
 
-    setSubmitting(true)
-    addExpert(result.data)
-    router.push('/')
+    setSubmitting(true);
+
+    const response = addExpert(result.data);
+
+    if (!response.success) {
+      setErrors({
+        email: [response.error],
+      });
+
+      setSubmitting(false);
+      return;
+    }
+
+    router.push("/");
   }
 
   return (
@@ -50,7 +64,7 @@ export default function NewExpertPage() {
         <Field label="Name" error={errors.name}>
           <input
             value={values.name}
-            onChange={(e) => update('name', e.target.value)}
+            onChange={(e) => update("name", e.target.value)}
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
           />
         </Field>
@@ -58,7 +72,7 @@ export default function NewExpertPage() {
         <Field label="Email" error={errors.email}>
           <input
             value={values.email}
-            onChange={(e) => update('email', e.target.value)}
+            onChange={(e) => update("email", e.target.value)}
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
           />
         </Field>
@@ -66,7 +80,7 @@ export default function NewExpertPage() {
         <Field label="Specialty" error={errors.specialty}>
           <select
             value={values.specialty}
-            onChange={(e) => update('specialty', e.target.value)}
+            onChange={(e) => update("specialty", e.target.value)}
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
           >
             <option value="">Select…</option>
@@ -82,7 +96,7 @@ export default function NewExpertPage() {
           <input
             type="number"
             value={values.yearsExperience}
-            onChange={(e) => update('yearsExperience', e.target.value)}
+            onChange={(e) => update("yearsExperience", e.target.value)}
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
           />
         </Field>
@@ -92,11 +106,11 @@ export default function NewExpertPage() {
           disabled={submitting}
           className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
         >
-          {submitting ? 'Saving…' : 'Save expert'}
+          {submitting ? "Saving…" : "Save expert"}
         </button>
       </form>
     </div>
-  )
+  );
 }
 
 function Field({
@@ -104,17 +118,19 @@ function Field({
   error,
   children,
 }: {
-  label: string
-  error?: string[]
-  children: React.ReactNode
+  label: string;
+  error?: string[];
+  children: React.ReactNode;
 }) {
   return (
     <div>
-      <label className="mb-1 block text-sm font-medium text-gray-700">{label}</label>
+      <label className="mb-1 block text-sm font-medium text-gray-700">
+        {label}
+      </label>
       {children}
       {error && error.length > 0 && (
         <p className="mt-1 text-sm text-red-600">{error[0]}</p>
       )}
     </div>
-  )
+  );
 }
