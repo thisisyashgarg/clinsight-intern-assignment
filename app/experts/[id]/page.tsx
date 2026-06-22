@@ -59,7 +59,7 @@ export default function ExpertDetailPage({
       <div className="mt-4 rounded-lg border border-gray-200 bg-white p-6">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-semibold">{expert.name}</h1>
+            <h1 className="break-all text-2xl font-semibold">{expert.name}</h1>
             <p className="text-gray-500">
               {expert.specialty} · {seniorityLabel(expert.yearsExperience)}
             </p>

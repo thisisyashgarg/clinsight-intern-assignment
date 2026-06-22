@@ -1,6 +1,7 @@
 'use client'
 
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 type ShortlistState = {
   ids: number[]
@@ -8,7 +9,7 @@ type ShortlistState = {
   isShortlisted: (id: number) => boolean
 }
 
-export const useShortlist = create<ShortlistState>((set, get) => ({
+export const useShortlist = create<ShortlistState>()(persist((set, get) => ({
   ids: [],
   toggle: (id) =>
     set((state) => ({
@@ -17,4 +18,7 @@ export const useShortlist = create<ShortlistState>((set, get) => ({
         : [...state.ids, id],
     })),
   isShortlisted: (id) => get().ids.includes(id),
+}),
+{
+  name: 'clinsight-shortlist',
 }))
